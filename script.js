@@ -20,4 +20,20 @@ window.onload = () => {
             $('#gototop').show()
         }
     })
+
+
+    this.document.getElementById("overlay").addEventListener("click", e => {
+        // $('#overlay').hide()
+        this.document.getElementById("overlay").style.visibility = "hidden"
+    })
+
+
+    for (ele of this.document.getElementsByClassName('overlayable')) {
+        ele.addEventListener('click', e => {
+            this.document.getElementById('overlay').style.visibility = "visible"
+            imgsrc = e.srcElement.src
+            // console.log(imgsrc)
+            this.document.getElementById('overlay-img').src = imgsrc
+        })
+    }
 }
