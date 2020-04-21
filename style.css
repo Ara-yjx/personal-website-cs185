@@ -38,11 +38,11 @@ body {
     /* clip-path: inset(-10px -10px 0px -10px); */ /* shadow style */
 }
 
-.navigate-tab p :hover {
-    background-color: #333333;
-
+.navigate-tab:hover p {
+    /* background-color: #eeeeee; */
+    position: relative;
+    top: -5px;
 }
-
 
 .main {
     /* box-shadow: 0px 0px 10px #aaaaaa; */ /* shadow style */
