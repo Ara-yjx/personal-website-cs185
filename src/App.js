@@ -13,7 +13,6 @@ export default class App extends Component {
         super(props);
         this.state = {'page': <Home/>};
         this.onTabChange = this.onTabChange.bind(this);
-        // without bind, "this" within onTabChange points to sth. else
     }
 
     onTabChange = function (tabName){
