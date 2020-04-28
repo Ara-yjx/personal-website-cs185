@@ -2,7 +2,33 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Favorites.css'
 
-export default function Favorites() {
+const movies = [
+    {
+        name: 'Wandering Earth',
+        poster: require('./imgs/posters/wandering_earth.jpg'),
+    },
+    {
+        name: '5 Centimeters per Second',
+        poster: require('./imgs/posters/5_centimeters.jpg'),
+    },
+    {
+        name: 'Léon: The Professional',
+        poster: require('./imgs/posters/leon.jpg'),
+    },
+]
+
+
+
+export default function Favorites(props) {
+
+    var movieDivs = movies.map((movie) =>
+        <div className="pb-5">
+            <h4><i>{movie.name}</i></h4>
+                <img className="ranking-item" src={movie.poster} alt={'poster'}
+                onClick={()=>props.onOverlayClick(movie.poster)}/>
+        </div>
+    )
+
     return (                  
     <div className="row main">
         <br/>
@@ -12,14 +38,9 @@ export default function Favorites() {
                 <h4>★ Favorite Movies ★</h4>
                 <div className="line"></div>
             </div>
-            <h4>1. <i>Wandering Earth</i></h4>
-            <img className="ranking-item overlayable" src="imgs/posters/wandering_earth.jpg"/>
-            <br/><br/><br/><hr/><br/><br/>
-            <h4>2. <i>5 Centimeters per Second</i></h4>
-            <img className="ranking-item overlayable" src="imgs/posters/5_centimeters.jpg"/>
-            <br/><br/><br/><hr/><br/><br/>
-            <h4>3. <i>Léon: The Professional</i></h4>
-            <img className="ranking-item overlayable" src="imgs/posters/leon.jpg"/>
+
+            {movieDivs}
+
         </div>
 
     </div>

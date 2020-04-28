@@ -11,27 +11,53 @@ export default class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {'page': <Home/>};
-        this.onTabChange = this.onTabChange.bind(this);
+        this.state = {
+            'page': <Home/>,
+            'overlay': 'hidden',
+            'gototop': 'hidden',
+            'overlayImg': require('./imgs/owls/img.gif'),
+        };
     }
 
-    onTabChange = function (tabName){
-        console.log('onTabChange ' + tabName)
-        switch(tabName) {
-            case 'Projects':
-                this.setState({'page': <Projects/>});
-                break;
-            case 'Favorites':
-                this.setState({'page': <Favorites/>});
-                break;
-            case 'Gallery':
-                this.setState({'page': <Gallery/>});
-                break;
-            default:
-                this.setState({'page': <Home/>});
-        }
 
+// Overlay
+    showOverlay = function (img) {
+        console.log('showOverlay')
+        this.setState({'overlay': 'visible', 'overlayImg': img})
+    }.bind(this)
+
+    hideOverlay = function () {
+        console.log('hideOverlay')
+        this.setState({'overlay': 'hidden'})
+    }.bind(this)
+
+
+// Go-to-top
+    componentDidMount = () => {
+        window.addEventListener('scroll', (e) => {
+            // console.log(window.scrollY)
+            var scrollrange = document.body.scrollHeight - window.innerHeight
+            if(window.scrollY < scrollrange / 2) {
+                this.setState({'gototop': 'hidden'})
+            } else {
+                this.setState({'gototop': 'visible'})
+            }
+        })
     }
+
+
+// Tab
+    tabPages = {
+        Home: <Home/>,
+        Projects: <Projects/>,
+        Favorites: <Favorites onOverlayClick={this.showOverlay}/>,
+        Gallery: <Gallery onOverlayClick={this.showOverlay}/>,
+    };
+
+    onTabChange = function (tabName) {
+        this.setState({page: this.tabPages[tabName] ? this.tabPages[tabName] : this.tabPages.Home});
+    }.bind(this)
+
 
 
     render = function () {
@@ -44,19 +70,24 @@ export default class App extends Component {
 
                         <div className="whitespace"></div>
                         <div className="row d-flex justify-content-center">
-                            <h1>Jiaxi Ye</h1>
+                            <h1 className="title">Jiaxi Ye</h1>
                         </div>
                         <div className="row d-flex justify-content-center">
                             <p className="caption">Coder. Artist. Owl lover.</p>
                         </div>
 
                         <TabList onTabChange={this.onTabChange}/>
-
                         {this.state.page}
 
                     </div>
                 </div>
             </div>
+
+            <div id="overlay" className={ this.state.overlay + " d-flex justify-content-center align-items-center"}
+                onClick={this.hideOverlay}>
+                <img src={this.state.overlayImg}/>
+            </div>
+            <div id="gototop" className={this.state.gototop}>^ Top</div>
         </div>
         )
     }
