@@ -1,22 +1,35 @@
 // import React from 'react';
-import React from 'react';
+import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './TabList.css'
 import Tab from './Tab'
 
 
-export default function TabList(props) {
+export default class TabList extends Component {
 
-    function tabClick(e) {
-        props.onTabChange(e)
+    
+    constructor(props) {
+        super(props)
+        this.tabs = ['Home', 'Projects', 'Favorites', 'Gallery', 'Guestbook']
+        this.state = { activate: 'Home' }
     }
 
-    return (                    
-    <div className="row navigate-bar">
-        <Tab click={tabClick} tabName='Home'/>        
-        <Tab click={tabClick} tabName='Projects'/>        
-        <Tab click={tabClick} tabName='Favorites'/>        
-        <Tab click={tabClick} tabName='Gallery'/>        
-    </div>
-    );
+    tabChange = function (e) {
+        this.props.onTabChange(e)
+        this.setState({ activate: e })
+        console.log(e)
+    }.bind(this)
+
+
+    render = function() {
+        var tabDivs = this.tabs.map((tab, i) => 
+            <Tab click={this.tabChange} tabActivate={this.state.activate==tab} tabName={tab}/>
+        )
+        return (
+        <div className="row navigate-bar">
+            {tabDivs}    
+        </div>
+        );
+    }
 }
 

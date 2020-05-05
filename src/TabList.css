@@ -1,0 +1,33 @@
+
+.navigate-bar {
+    /* background-color: white; */
+    align-items: stretch;
+    padding: 0 5px;
+  }
+  
+  .navigate-tab {
+    padding: 0 10px;
+    flex-grow: 1;
+  }
+  
+  .navigate-tab p {
+    color: white;
+    background-color: #333333;
+    padding: 5px 10px;
+    margin-bottom: 0;
+    box-shadow: 0px 0px 0px 2px #333333;
+  }
+  
+  .activate-tab p {
+    color: black;
+    background-color: white;
+    /* box-shadow: 0px 0px 10px #aaaaaa; */ /* shadow style */
+    /* clip-path: inset(-10px -10px 0px -10px); */ /* shadow style */
+  }
+  
+  .navigate-tab:hover p {
+    /* background-color: #eeeeee; */
+    position: relative;
+    top: -5px;
+  }
+  

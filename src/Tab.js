@@ -5,7 +5,7 @@ function Tab(props) {
     var tabActivateClass = props.tabActivate ? 'activate-tab' : ''
 
     return (                    
-    <div className={"col-3 navigate-tab" + tabActivateClass} 
+    <div className={'navigate-tab ' + tabActivateClass} 
         onClick={()=>props.click(props.tabName)} >
         <p>{props.tabName}</p>
     </div>

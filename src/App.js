@@ -6,13 +6,14 @@ import Home from './Home'
 import Projects from './Projects'
 import Favorites from './Favorites'
 import Gallery from './Gallery'
+import Guestbook from './Guestbook'
 
 export default class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            'page': <Home/>,
+            'page': <Guestbook/>,
             'overlay': 'hidden',
             'gototop': 'hidden',
             'overlayImg': require('./imgs/owls/img.gif'),
@@ -52,6 +53,7 @@ export default class App extends Component {
         Projects: <Projects/>,
         Favorites: <Favorites onOverlayClick={this.showOverlay}/>,
         Gallery: <Gallery onOverlayClick={this.showOverlay}/>,
+        Guestbook: <Guestbook/>,
     };
 
     onTabChange = function (tabName) {
@@ -77,6 +79,9 @@ export default class App extends Component {
                         </div>
 
                         <TabList onTabChange={this.onTabChange}/>
+                        
+                        <div className="whitespace"></div>
+                        
                         {this.state.page}
 
                     </div>

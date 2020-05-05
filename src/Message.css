@@ -1,0 +1,10 @@
+.msg-box {
+    /* border: 2px solid #333; */
+    box-shadow: 0px 0px 10px #aaaaaa;
+    padding: 10px;
+    margin: 20px 0;
+
+    /* limit height */
+    max-height: 80vh; 
+    overflow-y: auto;
+}
