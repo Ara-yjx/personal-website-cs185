@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "327ba789f9786a80046a42144eb2325e",
+    "revision": "31d8b23e939d25e75862057e16153aca",
     "url": "/personal-website-cs185/index.html"
   },
   {
-    "revision": "a8e20aafd6a217b674ee",
+    "revision": "bbcd20ab5470a2d68858",
     "url": "/personal-website-cs185/static/css/2.69121389.chunk.css"
   },
   {
-    "revision": "f73eaee84cd98d5d6ff3",
-    "url": "/personal-website-cs185/static/css/main.28a6aca4.chunk.css"
+    "revision": "5476a38574483b614625",
+    "url": "/personal-website-cs185/static/css/main.22d1c8a9.chunk.css"
   },
   {
-    "revision": "a8e20aafd6a217b674ee",
-    "url": "/personal-website-cs185/static/js/2.e7198d84.chunk.js"
+    "revision": "bbcd20ab5470a2d68858",
+    "url": "/personal-website-cs185/static/js/2.7c6b9910.chunk.js"
   },
   {
-    "revision": "e88a3e95b5364d46e95b35ae8c0dc27d",
-    "url": "/personal-website-cs185/static/js/2.e7198d84.chunk.js.LICENSE.txt"
+    "revision": "d00098666f3a9b89d824bdeb15ece8eb",
+    "url": "/personal-website-cs185/static/js/2.7c6b9910.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "f73eaee84cd98d5d6ff3",
-    "url": "/personal-website-cs185/static/js/main.4883db98.chunk.js"
+    "revision": "5476a38574483b614625",
+    "url": "/personal-website-cs185/static/js/main.5d75d77c.chunk.js"
   },
   {
     "revision": "03f74fbaee501b6ba2d6",
@@ -70,6 +70,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "a1dd68bc8a23f685c3100ec4a13d0373",
     "url": "/personal-website-cs185/static/media/img.a1dd68bc.gif"
+  },
+  {
+    "revision": "c85f2cebf5c453af13334065d1cc2204",
+    "url": "/personal-website-cs185/static/media/iphone-spinner-2.c85f2ceb.gif"
   },
   {
     "revision": "51e0f364cb07e31d910edf7bcb6d04aa",
