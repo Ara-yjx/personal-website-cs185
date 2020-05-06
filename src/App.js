@@ -13,7 +13,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            'page': <Guestbook/>,
+            'page': <Home/>,
             'overlay': 'hidden',
             'gototop': 'hidden',
             'overlayImg': require('./imgs/owls/img.gif'),

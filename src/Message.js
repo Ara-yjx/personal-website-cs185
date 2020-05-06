@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Message.css'
 
@@ -11,7 +11,7 @@ export default function Message(props) {
     );
 
     return (
-    <div className="msg-box">
+    <div className={(props.highlight ? 'breath ':'') + 'msg-box'}>
         <h4>{props.data.name}</h4>
         <p>{props.data.description}</p>
         <hr/>
