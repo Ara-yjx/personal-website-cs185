@@ -3,5 +3,6 @@
 }
 
 .gallery-img {
+    width: 100%;
     box-shadow: 0px 0px 10px #aaaaaa;
 }

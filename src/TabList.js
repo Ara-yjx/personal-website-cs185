@@ -23,7 +23,7 @@ export default class TabList extends Component {
 
     render = function() {
         var tabDivs = this.tabs.map((tab, i) => 
-            <Tab click={this.tabChange} tabActivate={this.state.activate==tab} tabName={tab}/>
+            <Tab click={this.tabChange} tabActivate={this.state.activate==tab} tabName={tab} key={i}/>
         )
         return (
         <div className="row navigate-bar">

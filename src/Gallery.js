@@ -40,7 +40,7 @@ export default class extends Component {
     render = ()=>{
         var imgs = this.owls.map((owl) => 
             <div className="gallery-container">
-                <img className="gallery-img w-100 my-2" 
+                <img className="gallery-img my-2" 
                     src={owl} 
                     onClick={()=>this.props.onOverlayClick(owl)}/>
             </div>

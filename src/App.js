@@ -14,7 +14,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            'page': 'Movies',
+            'page': 'Home',
             'overlay': 'hidden',
             'gototop': 'hidden',
             'overlayImg': require('./imgs/owls/img.gif'),
@@ -24,12 +24,10 @@ export default class App extends Component {
 
 // Overlay
     showOverlay = function (img) {
-        console.log('showOverlay')
         this.setState({'overlay': 'visible', 'overlayImg': img})
     }.bind(this)
 
     hideOverlay = function () {
-        console.log('hideOverlay')
         this.setState({'overlay': 'hidden'})
     }.bind(this)
 
