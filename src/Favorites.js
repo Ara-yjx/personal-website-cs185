@@ -48,7 +48,6 @@ export default function Favorites(props) {
             </div>
 
         </div>
-
     </div>
     )
 }

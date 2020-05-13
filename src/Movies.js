@@ -19,16 +19,29 @@ export default class Movies extends Component {
         super(props);
         this.state = { loading: true, overlay: "hidden", overlayData:{}, ratingStar:2 };
         this.movieData = {}
-        this.r = React.createRef();
     }
 
     async componentDidMount() {
+        // control scrolling
+        window.addEventListener('wheel', this.scrollLock, { passive: false }); // modern desktop
+        window.addEventListener('mousewheel', this.scrollLock, { passive: false }); // modern desktop
+        window.addEventListener('touchmove', this.scrollLock, { passive: false }); // mobile
+        // window.addEventListener('keydown', this.scrollLock, false);
+
         for (let id of MOVIEIDS) {
             var response = await axios.get(`http://www.omdbapi.com/?i=${id}&apikey=${APIKEY}`);
             this.movieData[id] = response.data;   
         }
         this.setState({ loading: false });
     }
+    
+    scrollLock = function (e) {
+        if(this.state.overlay === 'visible'){
+            e.preventDefault();
+        }
+        return false;
+    }.bind(this)
+
 
  // Overlay
     showOverlay = function (data) {
@@ -51,7 +64,7 @@ export default class Movies extends Component {
         else {
             var posterDivs = Object.values(this.movieData).map((data, index) => 
                 <div className="m-2 -shadow poster-container">
-                    <img src={data.Poster} className="poster"  
+                    <img src={data.Poster} className="poster" key={index}
                     onClick={()=>this.showOverlay(data)}></img>
                 </div>
             )
@@ -68,7 +81,7 @@ export default class Movies extends Component {
             <p>Director: {oData.Director}</p>
             <div className="mb-3 d-flex flex-row justify-content-center align-items-baseline">
                 <p class="m-0 mr-2">Rating: {oData.imdbRating}</p>
-                <Rating icon='star' rating={oData.ratingStar} maxRating={5} disabled ref={this.r}/>
+                <Rating icon='star' rating={oData.ratingStar} maxRating={5} disabled/>
             </div>
             <div className="mb-3 d-flex flex-row justify-content-center align-items-baseline">
                 {labelDivs}
