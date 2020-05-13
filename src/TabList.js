@@ -10,7 +10,7 @@ export default class TabList extends Component {
     
     constructor(props) {
         super(props)
-        this.tabs = ['Home', 'Projects', 'Favorites', 'Gallery', 'Guestbook']
+        this.tabs = ['Home', 'Projects', 'Favorites', 'Gallery', 'Guestbook', 'Movies']
         this.state = { activate: 'Home' }
     }
 
