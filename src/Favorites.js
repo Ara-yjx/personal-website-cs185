@@ -21,25 +21,32 @@ const movies = [
 
 export default function Favorites(props) {
 
-    var movieDivs = movies.map((movie) =>
-        <div className="pb-5">
-            <h4><i>{movie.name}</i></h4>
+    var movieDivs = movies.map((movie, index) =>
+        // <div className={"row pb-5 d-flex " + (index % 2 ? "flex-row-reverse":"")}>
+        <div className="row pb-5">
+            <div className="col-6">
+                <h4><i>{movie.name}</i></h4>
+            </div>
+            <div className="col-6">
                 <img className="ranking-item" src={movie.poster} alt={'poster'}
                 onClick={()=>props.onOverlayClick(movie.poster)}/>
+            </div>
         </div>
     )
 
-    return (                  
+    return (
     <div className="row main">
         <br/>
         <div className="col">
             <div className="w-100 d-flex justify-content-center align-items-center my-5">
                 <div className="line"></div>
-                <h4>★ Favorite Movies ★</h4>
+                <h4 className="mx-2">★ Favorite Movies ★</h4>
                 <div className="line"></div>
             </div>
 
-            {movieDivs}
+            <div className="container-fluid">
+                {movieDivs}
+            </div>
 
         </div>
 
