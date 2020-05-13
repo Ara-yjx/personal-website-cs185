@@ -11,7 +11,7 @@ import './Movies.css';
 
 
 const APIKEY = '9adc9a37'
-// http://www.omdbapi.com/?i=tt3896198&apikey=9adc9a37
+// https://www.omdbapi.com/?i=tt3896198&apikey=9adc9a37
 
 export default class Movies extends Component {
 
@@ -29,7 +29,7 @@ export default class Movies extends Component {
         // window.addEventListener('keydown', this.scrollLock, false);
 
         for (let id of MOVIEIDS) {
-            var response = await axios.get(`http://www.omdbapi.com/?i=${id}&apikey=${APIKEY}`);
+            var response = await axios.get(`https://www.omdbapi.com/?i=${id}&apikey=${APIKEY}`);
             this.movieData[id] = response.data;   
         }
         this.setState({ loading: false });
