@@ -1,6 +1,5 @@
 // import React from 'react';
 import React, {Component} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './TabList.css'
 import Tab from './Tab'
 

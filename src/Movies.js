@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Rating, Label } from 'semantic-ui-react'
 // import 'semantic-ui-css/semantic.min.css'
+// Partial import to prevent conflict with Bootstrap
 import 'semantic-ui-css/components/label.css'
 import 'semantic-ui-css/components/rating.css'
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import loadingImg from './imgs/iphone-spinner-2.gif'
 import MOVIEIDS from './MovieIds'
@@ -23,8 +23,6 @@ export default class Movies extends Component {
     }
 
     async componentDidMount() {
-        // load poster imgs
-        // this.setState({ loading: true });
         for (let id of MOVIEIDS) {
             var response = await axios.get(`http://www.omdbapi.com/?i=${id}&apikey=${APIKEY}`);
             this.movieData[id] = response.data;   

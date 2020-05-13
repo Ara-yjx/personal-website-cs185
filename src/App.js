@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import TabList from './TabList'
 import Home from './Home'
 import Projects from './Projects'

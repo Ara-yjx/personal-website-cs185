@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './Gallery.css';
 
 // import o00 from './imgs/owls/img.gif'

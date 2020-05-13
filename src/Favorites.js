@@ -1,5 +1,4 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './Favorites.css'
 
 const movies = [
@@ -38,7 +37,7 @@ export default function Favorites(props) {
     <div className="row main">
         <br/>
         <div className="col">
-            <div className="w-100 d-flex justify-content-center align-items-center my-5">
+            <div className="w-100 d-flex justify-content-center align-items-center mb-5">
                 <div className="line"></div>
                 <h4 className="mx-2">★ Favorite Movies ★</h4>
                 <div className="line"></div>
