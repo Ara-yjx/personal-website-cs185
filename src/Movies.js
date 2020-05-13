@@ -77,16 +77,18 @@ export default class Movies extends Component {
         var overlayDiv = 
         <div id="movie-overlay" className={ this.state.overlay + " d-flex justify-content-center align-items-center"}
         onClick={this.hideOverlay}>
-            <h2><i>{oData.Title}</i></h2>
-            <p>Director: {oData.Director}</p>
-            <div className="mb-3 d-flex flex-row justify-content-center align-items-baseline">
-                <p class="m-0 mr-2">Rating: {oData.imdbRating}</p>
-                <Rating icon='star' rating={oData.ratingStar} maxRating={5} disabled/>
+            <div className="overlay-center">
+                <h2 className="mb-2"><i>{oData.Title}</i></h2>
+                <p className="mb-2">Director: {oData.Director}</p>
+                <div className="mb-2 d-flex flex-row justify-content-start align-items-baseline" style={{'font-weight':400}}>
+                    <p class="m-0 mr-2">Rating: {oData.imdbRating}</p>
+                    <Rating icon='star' rating={oData.ratingStar} maxRating={5} disabled/>
+                </div>
+                <div className="mb-2 d-flex flex-row justify-content-start align-items-baseline flex-wrap-around">
+                    {labelDivs}
+                </div>
+                <img src={oData.Poster} className="overlay-poster"></img>
             </div>
-            <div className="mb-3 d-flex flex-row justify-content-center align-items-baseline">
-                {labelDivs}
-            </div>
-            <img src={oData.Poster} className="overlay-poster"></img>
         </div>
 
         return (

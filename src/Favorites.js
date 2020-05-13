@@ -37,13 +37,15 @@ export default function Favorites(props) {
     <div className="row main">
         <br/>
         <div className="col">
-            <div className="w-100 d-flex justify-content-center align-items-center mb-5">
-                <div className="line"></div>
-                <h4 className="mx-2">★ Favorite Movies ★</h4>
-                <div className="line"></div>
-            </div>
-
             <div className="container-fluid">
+                <div className="row">
+                    <div className="col-12 d-flex justify-content-center align-items-center mb-5">
+                        <div className="line"></div>
+                        <h4 className="mx-2">★ Favorite Movies ★</h4>
+                        <div className="line"></div>
+                    </div>
+                </div>
+
                 {movieDivs}
             </div>
 
