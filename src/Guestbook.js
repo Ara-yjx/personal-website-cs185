@@ -3,6 +3,7 @@ import firebase from 'firebase'
 import config from './config'
 // import { Button } from 'react-bootstrap';
 import { motion } from "framer-motion"
+import DB from './Database'
 import Message from './Message'
 import MessageForm from './MessageForm'
 import loadingImg from './imgs/iphone-spinner-2.gif'
@@ -15,16 +16,8 @@ export default class Guestbook extends Component {
     constructor(props) {
         super(props)
         
-        console.log('initstate')
         this.state = { messages: [], loading:true, first:true }
-
-        console.log(firebase)
-        if (!firebase.apps.length) {
-            firebase.initializeApp(config)
-            console.log('firebase init')
-            console.log(this)
-        } 
-
+        DB.init();
     }
     
     componentDidMount() {
@@ -77,7 +70,7 @@ export default class Guestbook extends Component {
 
         return (
         <div className="container-fluid p-0">
-            <div class="row justify-content-around">
+            <div className="row justify-content-around">
                 <div className="col-4">
                     <h4>Leave a message here ↓</h4>
                     <MessageForm onSubmit={this.submit}/>
