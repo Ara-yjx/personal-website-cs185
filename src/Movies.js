@@ -11,7 +11,9 @@ import MovieOverlays from './MovieOverlay'
 // Firebase format
 // In ref('movies'):
 // movies: {
-//     listname: [ movieData ]    
+//     listname: { 
+//        id: {movieData}
+//     }
 // }
 
 
@@ -70,13 +72,10 @@ export default class Movies extends Component {
 
     // Movie Control
     addMovie = async function (event) {
+        // event.preventDefault();
+        // event.stopPropagation();
 
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        const form = event.currentTarget; // form == [ nameField, ...]
-
+        const form = event.currentTarget; // form == [ nameField, ...
 
         let id = this.addMovieInputRef.current.value;
     
@@ -95,10 +94,20 @@ export default class Movies extends Component {
             Genre: movieData.Genre,
             Poster: movieData.Poster,
         }
-        let movieState = this.state.movies;
-        movieState['all'].push(filteredData);
-        firebase.database().ref('movies').set(movieState);
+        let moviesState = this.state.movies;
+        moviesState['all'][filteredData.imdbID] = filteredData;
+        firebase.database().ref('movies').set(moviesState);
         // refresh
+    }.bind(this);
+
+
+    deleteMovie = function(id) {
+        console.log(id)
+        var moviesState = this.state.movies;
+        for(let listName in moviesState) {
+            delete moviesState[listName][id]
+        }
+        firebase.database().ref('movies').set(moviesState);
     }.bind(this)
 
 
@@ -116,10 +125,10 @@ export default class Movies extends Component {
         // Control Panel
         var panelDiv = 
         <div>
-            <form onSubmit={this.addMovie}>
+            {/* <form onSubmit={this.addMovie}> */}
                 <input ref={this.addMovieInputRef}></input>
                 <Button type="submit" variant="outline-dark" onClick={this.addMovie}>Add Movie</Button>
-            </form>
+            {/* </form> */}
         </div>
 
         // Posters
@@ -129,9 +138,9 @@ export default class Movies extends Component {
         </div>
         if(!this.state.loading) {
             console.log(this.state)
-            var movieList = this.state.movies[this.state.currentList]
+            var movieList = this.state.movies[this.state.currentList] ?? {};
             console.log(movieList)
-            posterDivs = movieList?.map((data, index) => 
+            posterDivs = Object.values(movieList).map((data, index) => 
                 <div className="m-2 -shadow poster-container" key={index}>
                     <img src={data.Poster} className="poster"
                     onClick={()=>this.showOverlay(data)}></img>
@@ -148,7 +157,10 @@ export default class Movies extends Component {
             <div className="w-100 h-100 d-flex flex-wrap justify-content-center align-items-center">
                 {posterDivs}
             </div>
-            <MovieOverlays data={this.state.overlayData} visibility={this.state.overlay} hideOverlay={this.hideOverlay}/>
+            <MovieOverlays data={this.state.overlayData} 
+                visibility={this.state.overlay} 
+                hideOverlay={this.hideOverlay}
+                deleteMovie={this.deleteMovie}/>
         </div>
         )
     }

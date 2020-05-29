@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Rating, Label } from 'semantic-ui-react'
+import { Button } from "react-bootstrap";
 // import 'semantic-ui-css/semantic.min.css'
 // Partial import to prevent conflict with Bootstrap
 import 'semantic-ui-css/components/label.css'
 import 'semantic-ui-css/components/rating.css'
+// import 'semantic-ui-css/components/form.css'
+import './Movies.css';
+
 
 export default function MovieOverlays(props) {
 
@@ -29,6 +33,12 @@ export default function MovieOverlays(props) {
                 {labelDivs}
             </div>
             <img src={oData.Poster} className="overlay-poster"></img>
+            <div className="mt-2" >
+                <Button variant="danger" size="sm" 
+                onClick={()=>props.deleteMovie(oData.imdbID)}>
+                    Remove
+                </Button>
+            </div>
         </div>
     </div>
     )
