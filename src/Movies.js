@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, DropdownButton, Dropdown, Form, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import firebase from 'firebase'
 import config from './config'
@@ -13,7 +13,7 @@ import MovieOverlays from './MovieOverlay'
 // movies: {
 //     listname: { 
 //        id: {movieData}
-//     }
+//     } || 0
 // }
 
 
@@ -29,6 +29,7 @@ export default class Movies extends Component {
             loading: true, 
             overlay: 'hidden', overlayData:{}, 
             movies:[], currentList:'all',
+            showDropdown: false,
         };
         // Init firebase
         if (!firebase.apps.length) {
@@ -37,6 +38,7 @@ export default class Movies extends Component {
         } 
         // Control Panel Reference
         this.addMovieInputRef = createRef();
+        this.addListInputRef = createRef();
     }
 
     async componentDidMount() {
@@ -111,6 +113,25 @@ export default class Movies extends Component {
     }.bind(this)
 
 
+    addList = function(e) {
+        console.log("addList")
+        // this.setState({showDropdown:false})
+        let newListName = this.addListInputRef.current.value;
+        let moviesState = this.state.movies;
+        if(newListName in moviesState) { 
+            window.alert("List already exists.");
+        } else {
+            moviesState[newListName] = 0;
+            firebase.database().ref('movies').set(moviesState);
+        }
+    }.bind(this);
+
+
+    onChangeList = function(listName) {
+        this.setState({currentList: listName})
+    }.bind(this);
+
+
     // Overlay control
     showOverlay = function (data) {
         this.setState({overlay: 'visible', overlayData: data})
@@ -122,13 +143,34 @@ export default class Movies extends Component {
 
 
     render = function () {
-        // Control Panel
+
+        // Control Panel        
+        var addListDiv = React.forwardRef((props, ref) => (
+            <div className={props.className+" d-flex"} ref={ref}>
+                <Form.Control className="w-auto mr-1"
+                    placeholder="+ Create new list"
+                    ref={this.addListInputRef}
+                />
+                <Button type="submit" variant="outline-primary" onClick={this.addList}>Create</Button>
+            </div>
+        ));
+
         var panelDiv = 
-        <div>
-            {/* <form onSubmit={this.addMovie}> */}
-                <input ref={this.addMovieInputRef}></input>
-                <Button type="submit" variant="outline-dark" onClick={this.addMovie}>Add Movie</Button>
-            {/* </form> */}
+        <div className="d-flex panel p-3 mb-3 w-100 -shadow">
+            <Dropdown onSelect={this.onChangeList}>
+                <Dropdown.Toggle variant="outline-primary">
+                    List: {this.state.currentList}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    { Object.keys(this.state.movies).map(listName =>
+                        <Dropdown.Item eventKey={listName} key={listName}>{listName}</Dropdown.Item>                
+                    )}
+                    <Dropdown.Divider/>
+                    <Dropdown.Item as={addListDiv} onClick={e=>e.preventDefault()}></Dropdown.Item>         
+                </Dropdown.Menu>
+            </Dropdown>
+            <input ref={this.addMovieInputRef}></input>
+            <Button type="submit" variant="outline-dark" onClick={this.addMovie}>Add Movie</Button>
         </div>
 
         // Posters

@@ -35,18 +35,26 @@
     height: 70vh;
 }
 
-/* patch for dark stars */
-.ui.star.rating .icon {
-    color: #111 !important;
-    text-shadow: 0 -1px 0 #ddc507,-1px 0 0 #ddc507,0 1px 0 #ddc507,1px 0 0 #ddc507!important;
-}
-
 .overlay-center {
     backdrop-filter: blur(8px);
     padding: 5vh;
     background-color: rgba(255,255,255,.1);
 }
 
+.panel {
+    /* background-color: #aaaaaa; */
+    
+}
+
+/* patch for dark stars */
+.ui.star.rating .icon {
+    color: #111 !important;
+    text-shadow: 0 -1px 0 #ddc507,-1px 0 0 #ddc507,0 1px 0 #ddc507,1px 0 0 #ddc507!important;
+}
+
+
+/* patch up for lables */
 .ui.label {
     font-weight: 400 !important;
 }
+
