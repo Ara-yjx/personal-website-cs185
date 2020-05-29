@@ -1,14 +1,19 @@
-import React, { Component } from 'react';
-import { Rating, Label, Button } from 'semantic-ui-react'
-// import 'semantic-ui-css/semantic.min.css'
-// Partial import to prevent conflict with Bootstrap
-import 'semantic-ui-css/components/label.css'
-import 'semantic-ui-css/components/rating.css'
+import React, { Component, createRef } from 'react';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import firebase from 'firebase'
+import config from './config'
 import loadingImg from './imgs/iphone-spinner-2.gif'
 import MOVIEIDS from './MovieIds'
 import './Movies.css';
 import MovieOverlays from './MovieOverlay'
+
+// Firebase format
+// In ref('movies'):
+// movies: {
+//     listname: [ movieData ]    
+// }
+
 
 
 const APIKEY = '9adc9a37'
@@ -18,8 +23,18 @@ export default class Movies extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { loading: true, overlay: "hidden", overlayData:{}, ratingStar:2 };
-        this.movieData = {}
+        this.state = { 
+            loading: true, 
+            overlay: 'hidden', overlayData:{}, 
+            movies:[], currentList:'all',
+        };
+        // Init firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(config)
+            console.log('firebase init')
+        } 
+        // Control Panel Reference
+        this.addMovieInputRef = createRef();
     }
 
     async componentDidMount() {
@@ -30,11 +45,18 @@ export default class Movies extends Component {
         // window.addEventListener('keydown', this.scrollLock, false);
 
         // Fetch data from API
-        for (let id of MOVIEIDS) {
-            var response = await axios.get(`https://www.omdbapi.com/?i=${id}&apikey=${APIKEY}`);
-            this.movieData[id] = response.data;   
-        }
+        // for (let id of MOVIEIDS) {
+        //     var response = await axios.get(`https://www.omdbapi.com/?i=${id}&apikey=${APIKEY}`);
+        //     this.movieData[id] = response.data;   
+        // }
         this.setState({ loading: false });
+
+        // Firebase onValue
+        firebase.database().ref('movies').on('value', (snapshot)=>{
+            console.log('movies onvalue')
+            console.log(snapshot.val())
+            this.setState({ movies: snapshot.val(), loading: false }, console.log)
+        })
     }
     
     scrollLock = function (e) {
@@ -45,9 +67,43 @@ export default class Movies extends Component {
     }.bind(this)
 
 
+
+    // Movie Control
+    addMovie = async function (event) {
+
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const form = event.currentTarget; // form == [ nameField, ...]
+
+
+        let id = this.addMovieInputRef.current.value;
+    
+        var response = await axios.get(`https://www.omdbapi.com/?i=${id}&apikey=${APIKEY}`);
+        var movieData = response.data;
+        if(movieData.Response === "False") {
+            console.log("Incorrect movie id.")
+        }
+        console.log(movieData)
+        // filter
+        var filteredData = {
+            imdbID: movieData.imdbID,
+            Title: movieData.Title,
+            Director: movieData.Director,
+            imdbRating: movieData.imdbRating,
+            Genre: movieData.Genre,
+            Poster: movieData.Poster,
+        }
+        let movieState = this.state.movies;
+        movieState['all'].push(filteredData);
+        firebase.database().ref('movies').set(movieState);
+        // refresh
+    }.bind(this)
+
+
     // Overlay control
     showOverlay = function (data) {
-        data.ratingStar = Math.round(parseFloat(data.imdbRating)/2)
         this.setState({overlay: 'visible', overlayData: data})
     }.bind(this)
 
@@ -60,7 +116,10 @@ export default class Movies extends Component {
         // Control Panel
         var panelDiv = 
         <div>
-            <Button variant="outline-dark">Add Movie</Button>
+            <form onSubmit={this.addMovie}>
+                <input ref={this.addMovieInputRef}></input>
+                <Button type="submit" variant="outline-dark" onClick={this.addMovie}>Add Movie</Button>
+            </form>
         </div>
 
         // Posters
@@ -69,9 +128,12 @@ export default class Movies extends Component {
             <img src={loadingImg} alt="loading"></img>
         </div>
         if(!this.state.loading) {
-            posterDivs = Object.values(this.movieData).map((data, index) => 
-                <div className="m-2 -shadow poster-container">
-                    <img src={data.Poster} className="poster" key={index}
+            console.log(this.state)
+            var movieList = this.state.movies[this.state.currentList]
+            console.log(movieList)
+            posterDivs = movieList?.map((data, index) => 
+                <div className="m-2 -shadow poster-container" key={index}>
+                    <img src={data.Poster} className="poster"
                     onClick={()=>this.showOverlay(data)}></img>
                 </div>
             )
