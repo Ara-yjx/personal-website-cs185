@@ -186,7 +186,7 @@ export default class Movies extends Component {
         ));
 
         var panelDiv = 
-        <div className="d-flex flex-wrap justify-content-between panel p-3 mb-3 w-100 -shadow">
+        <div className="d-flex flex-wrap justify-content-between p-3 mb-3 w-100 -shadow">
             <Dropdown onSelect={this.switchList}>
                 <Dropdown.Toggle variant="outline-primary" className="toggle">
                     List: {this.state.currentList}
