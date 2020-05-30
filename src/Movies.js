@@ -31,6 +31,7 @@ export default class Movies extends Component {
             movies:[], currentList:'All',
             showDropdown: false,
             searchText: "",
+            page: 1,
         };
         // Init firebase
         if (!firebase.apps.length) {
@@ -153,6 +154,11 @@ export default class Movies extends Component {
     }.bind(this)
 
 
+    displayMore = function() {
+        this.setState({page: this.state.page + 1})
+    }.bind(this)
+
+
     // Overlay control
     showOverlay = function (data) {
         this.setState({overlay: 'visible', overlayData: data})
@@ -196,7 +202,6 @@ export default class Movies extends Component {
             <input ref={this.addMovieInputRef}></input>
             <Button type="submit" variant="outline-dark" onClick={this.addMovie}>Add Movie</Button>
             <input placeholder="search title" ref={this.searchInputRef} onChange={this.searchChange}></input>
-
         </div>
 
         // Posters
@@ -213,6 +218,12 @@ export default class Movies extends Component {
                     movie.Title.toLowerCase().includes(this.state.searchText.toLowerCase())
                 )
             }
+            // paginate
+            if(8 * this.state.page < moviesArray.length) {
+                moviesArray = moviesArray.slice(0, 8 * this.state.page);
+                var paginated = true;
+            }
+            // 
             posterDivs = moviesArray.map(data => 
                 <div className="m-2 -shadow poster-container" key={data.imdbID}>
                     <img src={data.Poster} className="poster"
@@ -243,6 +254,12 @@ export default class Movies extends Component {
             <div className="w-100 h-100 d-flex flex-wrap justify-content-center align-items-center">
                 {posterDivs}
             </div>
+            {
+            paginated ?
+            <div className="d-flex w-100 justify-content-center m-2" onClick={this.displayMore}>
+                <Button>More...</Button>
+            </div> : ''
+            }
             <MovieOverlays 
                 data={this.state.overlayData} 
                 visibility={this.state.overlay} 
