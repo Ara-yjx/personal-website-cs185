@@ -124,7 +124,7 @@ export default class Movies extends Component {
         let newListName = this.addListInputRef.current.value;
         let moviesState = this.state.movies;
         if(newListName in moviesState) { 
-            window.alert("List already exists.");
+            window.alert(`List "${newListName}" already exists.`);
         } else {
             moviesState[newListName] = 0;
             firebase.database().ref('movies').set(moviesState);
@@ -186,22 +186,26 @@ export default class Movies extends Component {
         ));
 
         var panelDiv = 
-        <div className="d-flex panel p-3 mb-3 w-100 -shadow">
+        <div className="d-flex flex-wrap justify-content-between panel p-3 mb-3 w-100 -shadow">
             <Dropdown onSelect={this.switchList}>
                 <Dropdown.Toggle variant="outline-primary" className="toggle">
                     List: {this.state.currentList}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     { lists.map(listName =>
-                        <Dropdown.Item eventKey={listName} key={listName}>{listName}</Dropdown.Item>                
+                        <Dropdown.Item eventKey={listName} active={listName==this.state.currentList} key={listName}>
+                            {listName}
+                        </Dropdown.Item>                
                     )}
                     <Dropdown.Divider/>
                     <Dropdown.Item as={addListDiv} onClick={e=>e.preventDefault()}></Dropdown.Item>         
                 </Dropdown.Menu>
             </Dropdown>
-            <input ref={this.addMovieInputRef}></input>
-            <Button type="submit" variant="outline-dark" onClick={this.addMovie}>Add Movie</Button>
-            <input placeholder="search title" ref={this.searchInputRef} onChange={this.searchChange}></input>
+            <div className="d-flex">
+                <input placeholder="Add by IMDB ID" className="mr-1" ref={this.addMovieInputRef}></input>
+                <Button type="submit" variant="outline-primary" onClick={this.addMovie}>Add movie</Button>
+            </div>
+            <input placeholder="🔍 Search title" ref={this.searchInputRef} onChange={this.searchChange} className="justify-self-end"></input>
         </div>
 
         // Posters

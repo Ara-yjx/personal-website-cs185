@@ -23,7 +23,7 @@ export default function MovieOverlays(props) {
 
 
     var addToListDiv = 
-    <DropdownButton title="Add to list" variant="outline-primary" size="sm"
+    <DropdownButton title="Add to list" variant="primary" size="sm"
     onClick={e=>e.stopPropagation()} onSelect={props.addToList}>
         { props.listNotIn.map(listName => 
             <Dropdown.Item eventKey={listName} key={listName}>{listName}</Dropdown.Item>
@@ -43,12 +43,12 @@ export default function MovieOverlays(props) {
             <div className="mb-2 d-flex flex-row justify-content-start align-items-baseline flex-wrap-around">
                 {labelDivs}
             </div>
-            <div className="mb-2">
-                <Button variant="outline-danger" size="sm" 
-                onClick={()=>props.deleteMovie(oData.imdbID)}>
-                    Remove
-                </Button>
+            <div className="d-flex mb-2 justify-content-between">
                 {addToListDiv}
+                <Button variant="danger" size="sm" 
+                onClick={()=>props.deleteMovie(oData.imdbID)}>
+                    Delete
+                </Button>
             </div>
             <img src={oData.Poster} className="overlay-poster"></img>
         </div>
