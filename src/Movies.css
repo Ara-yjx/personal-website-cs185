@@ -46,6 +46,11 @@
     
 }
 
+
+.toggle {
+    min-width: 100px;
+}
+
 /* patch for dark stars */
 .ui.star.rating .icon {
     color: #111 !important;

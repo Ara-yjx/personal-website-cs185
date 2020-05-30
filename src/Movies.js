@@ -28,7 +28,7 @@ export default class Movies extends Component {
         this.state = { 
             loading: true, 
             overlay: 'hidden', overlayData:{}, 
-            movies:[], currentList:'all',
+            movies:[], currentList:'All',
             showDropdown: false,
         };
         // Init firebase
@@ -83,8 +83,10 @@ export default class Movies extends Component {
     
         var response = await axios.get(`https://www.omdbapi.com/?i=${id}&apikey=${APIKEY}`);
         var movieData = response.data;
+        console.log(movieData.Response)
         if(movieData.Response === "False") {
-            console.log("Incorrect movie id.")
+            window.alert("Incorrect movie id.")
+            return;
         }
         console.log(movieData)
         // filter
@@ -97,7 +99,7 @@ export default class Movies extends Component {
             Poster: movieData.Poster,
         }
         let moviesState = this.state.movies;
-        moviesState['all'][filteredData.imdbID] = filteredData;
+        moviesState['All'][filteredData.imdbID] = filteredData;
         firebase.database().ref('movies').set(moviesState);
         // refresh
     }.bind(this);
@@ -127,9 +129,21 @@ export default class Movies extends Component {
     }.bind(this);
 
 
-    onChangeList = function(listName) {
+    switchList = function(listName) {
         this.setState({currentList: listName})
     }.bind(this);
+
+
+    addToList = function(listName) {
+        let id = this.state.overlayData.imdbID;
+        let moviesState = this.state.movies;
+        console.log(id)
+        // solve empty list
+        if(moviesState[listName] === 0) moviesState[listName] = {}
+        moviesState[listName][id] = moviesState['All'][id];
+        console.log(moviesState)
+        firebase.database().ref('movies').set(moviesState);
+    }.bind(this)
 
 
     // Overlay control
@@ -144,6 +158,9 @@ export default class Movies extends Component {
 
     render = function () {
 
+        var movies = this.state.movies;
+        var lists = Object.keys(movies);
+
         // Control Panel        
         var addListDiv = React.forwardRef((props, ref) => (
             <div className={props.className+" d-flex"} ref={ref}>
@@ -157,12 +174,12 @@ export default class Movies extends Component {
 
         var panelDiv = 
         <div className="d-flex panel p-3 mb-3 w-100 -shadow">
-            <Dropdown onSelect={this.onChangeList}>
-                <Dropdown.Toggle variant="outline-primary">
+            <Dropdown onSelect={this.switchList}>
+                <Dropdown.Toggle variant="outline-primary" className="toggle">
                     List: {this.state.currentList}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    { Object.keys(this.state.movies).map(listName =>
+                    { lists.map(listName =>
                         <Dropdown.Item eventKey={listName} key={listName}>{listName}</Dropdown.Item>                
                     )}
                     <Dropdown.Divider/>
@@ -179,8 +196,7 @@ export default class Movies extends Component {
             <img src={loadingImg} alt="loading"></img>
         </div>
         if(!this.state.loading) {
-            console.log(this.state)
-            var movieList = this.state.movies[this.state.currentList] ?? {};
+            var movieList = movies[this.state.currentList] ?? {};
             console.log(movieList)
             posterDivs = Object.values(movieList).map((data, index) => 
                 <div className="m-2 -shadow poster-container" key={index}>
@@ -191,6 +207,19 @@ export default class Movies extends Component {
         }
 
         
+        // listNotIn prop for overlay
+        var listNotIn = [];
+        for(let listName of lists) {
+            // solve empty list "movies[listName] == 0"
+            if(movies[listName] == 0) {
+                listNotIn.push(listName);
+            // solve initially "state.overlayData.imdbID == undefine" 
+            } else if(this.state.overlayData.imdbID) {
+                if(!(this.state.overlayData.imdbID in movies[listName])) {
+                    listNotIn.push(listName);
+                }
+            }
+        }
 
         // Assemble
         return (
@@ -199,10 +228,13 @@ export default class Movies extends Component {
             <div className="w-100 h-100 d-flex flex-wrap justify-content-center align-items-center">
                 {posterDivs}
             </div>
-            <MovieOverlays data={this.state.overlayData} 
+            <MovieOverlays 
+                data={this.state.overlayData} 
                 visibility={this.state.overlay} 
                 hideOverlay={this.hideOverlay}
-                deleteMovie={this.deleteMovie}/>
+                deleteMovie={this.deleteMovie}
+                addToList={this.addToList}
+                listNotIn={listNotIn}/>
         </div>
         )
     }
