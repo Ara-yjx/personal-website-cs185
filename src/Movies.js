@@ -30,6 +30,7 @@ export default class Movies extends Component {
             overlay: 'hidden', overlayData:{}, 
             movies:[], currentList:'All',
             showDropdown: false,
+            searchText: "",
         };
         // Init firebase
         if (!firebase.apps.length) {
@@ -39,6 +40,7 @@ export default class Movies extends Component {
         // Control Panel Reference
         this.addMovieInputRef = createRef();
         this.addListInputRef = createRef();
+        this.searchInputRef = createRef();
     }
 
     async componentDidMount() {
@@ -146,6 +148,11 @@ export default class Movies extends Component {
     }.bind(this)
 
 
+    searchChange = function(e) {
+        this.setState({searchText: this.searchInputRef.current.value});
+    }.bind(this)
+
+
     // Overlay control
     showOverlay = function (data) {
         this.setState({overlay: 'visible', overlayData: data})
@@ -188,6 +195,8 @@ export default class Movies extends Component {
             </Dropdown>
             <input ref={this.addMovieInputRef}></input>
             <Button type="submit" variant="outline-dark" onClick={this.addMovie}>Add Movie</Button>
+            <input placeholder="search title" ref={this.searchInputRef} onChange={this.searchChange}></input>
+
         </div>
 
         // Posters
@@ -196,10 +205,16 @@ export default class Movies extends Component {
             <img src={loadingImg} alt="loading"></img>
         </div>
         if(!this.state.loading) {
-            var movieList = movies[this.state.currentList] ?? {};
-            console.log(movieList)
-            posterDivs = Object.values(movieList).map((data, index) => 
-                <div className="m-2 -shadow poster-container" key={index}>
+            var moviesInList = movies[this.state.currentList] ?? {};
+            var moviesArray = Object.values(moviesInList);
+            // filter
+            if(this.state.searchText.length > 0) {
+                moviesArray = moviesArray.filter(movie => 
+                    movie.Title.toLowerCase().includes(this.state.searchText.toLowerCase())
+                )
+            }
+            posterDivs = moviesArray.map(data => 
+                <div className="m-2 -shadow poster-container" key={data.imdbID}>
                     <img src={data.Poster} className="poster"
                     onClick={()=>this.showOverlay(data)}></img>
                 </div>
